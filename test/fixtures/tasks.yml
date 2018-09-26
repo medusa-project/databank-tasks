@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  web_id: MyString
+  storage_root: MyString
+  storage_key: MyString
+  binary_name: MyString
+  status: MyString
+  peek_type: MyString
+  peek_text: MyText
+
+two:
+  web_id: MyString
+  storage_root: MyString
+  storage_key: MyString
+  binary_name: MyString
+  status: MyString
+  peek_type: MyString
+  peek_text: MyText

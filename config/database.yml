@@ -89,3 +89,7 @@ pilot:
     <<: *default
     database: databank_tasks
 
+staging:
+  <<: *default
+  database: databank_tasks
+

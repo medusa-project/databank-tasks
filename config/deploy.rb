@@ -7,6 +7,9 @@ set :rvm_ruby_version, '2.5.1@processor'
 
 set :migration_role, :app
 
+set :ssh_options, {:forward_agent => true}
+
+
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
@@ -24,10 +27,10 @@ set :migration_role, :app
 # set :pty, true
 
 # Default value for :linked_files is []
-append :linked_files, 'config/master.key', 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle'
+append :linked_files, "config/master.key"
 
 # Default value for linked_dirs is []
-# append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
+append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system", "vendor/bundle"
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }

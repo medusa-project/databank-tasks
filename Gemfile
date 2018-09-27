@@ -16,7 +16,8 @@ gem 'passenger'
 # Use capistrano for deployment
 group :development do
   gem "capistrano", "~> 3.10", require: false
-  gem 'capistrano-rvm'
+  gem 'capistrano-rvm', require: false
+  gem 'capistrano-passenger', require: false
   gem "capistrano-rails", "~> 1.4", require: false
 end
 

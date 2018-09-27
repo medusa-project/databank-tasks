@@ -92,5 +92,7 @@ pilot:
 staging:
   <<: *default
   database: databank_tasks
-  host: medusa-db-dev.library.illinois.edu
+  username: <%= Rails.application.credentials[Rails.env.to_sym][:primary_db][:username] %>
+  password: <%= Rails.application.credentials[Rails.env.to_sym][:primary_db][:password] %>
+  host: <%= Rails.application.credentials[Rails.env.to_sym][:primary_db][:host] %>
 

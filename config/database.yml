@@ -92,4 +92,5 @@ pilot:
 staging:
   <<: *default
   database: databank_tasks
+  host: medusa-db-dev.library.illinois.edu
 

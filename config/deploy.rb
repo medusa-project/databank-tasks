@@ -10,7 +10,7 @@ set :migration_role, :app
 
 set :ssh_options, {:forward_agent => true}
 
-set :passenger_restart_with_touch, true
+set :passenger_restart_with_touch, false
 
 set :passenger_restart_with_sudo, false
 

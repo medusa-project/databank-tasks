@@ -9,10 +9,6 @@ set :migration_role, :app
 
 set :ssh_options, {:forward_agent => true}
 
-set :passenger_in_gemfile, true
-
-set :passenger_restart_with_touch, false
-
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp

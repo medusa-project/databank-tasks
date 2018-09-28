@@ -10,7 +10,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
 # gem 'puma', '~> 3.11'
 
-# Use passenger + nginx app server
+# Use passenger app server
 gem 'passenger'
 
 # Use capistrano for deployment

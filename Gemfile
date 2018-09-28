@@ -11,7 +11,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 # gem 'puma', '~> 3.11'
 
 # Use passenger app server
-gem 'passenger'
+gem 'passenger', require: "phusion_passenger/rack_handler"
 
 # Use capistrano for deployment
 group :development do

@@ -1,3 +1,6 @@
+set :rails_env, 'staging'
+set :deploy_to, '/home/lib-medusa-databank'
+
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
@@ -6,6 +9,15 @@
 # server "example.com", user: "deploy", roles: %w{app db web}, my_property: :my_value
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
+server 'databank-tasks-pilot.library.illinois.edu', user: 'centos', roles: %w{app db web}
+
+set :rails_env, 'pilot'
+
+set :ssh_options, {
+    forward_agent: true,
+    auth_methods: ["publickey"],
+    keys: ["#{Dir.home}/.ssh/medusa-pilot.pem"]
+}
 
 
 

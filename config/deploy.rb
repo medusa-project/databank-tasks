@@ -3,18 +3,14 @@ lock "~> 3.11.0"
 
 set :application, 'databank-tasks'
 set :repo_url, 'git@github.com:medusa-project/databank-tasks.git'
-set :rvm_ruby_version, '2.5.1@banktasks'
-set :passenger_rvm_ruby_version, '2.5.1@banktasks'
+set :rvm_ruby_version, '2.5.1@processor'
+set :passenger_rvm_ruby_version, '2.5.1@processor'
 
 set :migration_role, :app
 
 set :ssh_options, {:forward_agent => true}
 
-set :passenger_restart_with_touch, false
-
-set :passenger_restart_with_sudo, false
-
-set :passenger_in_gemfile, true
+set :passenger_restart_with_touch, true
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp

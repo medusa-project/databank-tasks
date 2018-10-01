@@ -3,8 +3,6 @@ lock "~> 3.11.0"
 
 set :application, 'databank-tasks'
 set :repo_url, 'git@github.com:medusa-project/databank-tasks.git'
-set :rvm_ruby_version, '2.5.1@processor'
-set :passenger_rvm_ruby_version, '2.5.1@processor'
 
 set :migration_role, :app
 

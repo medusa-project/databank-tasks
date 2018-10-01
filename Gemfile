@@ -16,9 +16,10 @@ gem 'passenger', require: "phusion_passenger/rack_handler"
 # Use capistrano for deployment
 group :development do
   gem "capistrano", "~> 3.10", require: false
-  gem 'capistrano-rvm', require: false
+  gem 'capistrano-rbenv', require: false
   gem 'capistrano-passenger', require: false
   gem "capistrano-rails", "~> 1.4", require: false
+  gem "capistrano-bundler", require: false
 end
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

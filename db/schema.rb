@@ -10,10 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_26_154613) do
+ActiveRecord::Schema.define(version: 2018_10_01_195751) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "comments", force: :cascade do |t|
+    t.bigint "problem_id", null: false
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "nested_items", force: :cascade do |t|
+    t.bigint "task_id", null: false
+    t.string "item_name", null: false
+    t.string "item_path", null: false
+    t.bigint "item_size", default: 0
+    t.boolean "is_directory", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "problems", force: :cascade do |t|
+    t.bigint "task_id", null: false
+    t.text "report", null: false
+    t.string "status", default: "reported"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "tasks", force: :cascade do |t|
     t.string "web_id"

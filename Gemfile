@@ -13,6 +13,21 @@ gem 'pg', '>= 0.18', '< 2.0'
 # Use passenger app server
 gem 'passenger', require: "phusion_passenger/rack_handler"
 
+# Use os to interact with operating system
+gem 'os'
+
+# Use in-house storage gem to manage flexible storage on filesystems and s3 buckets
+gem 'medusa_storage', git: 'https://github.com/medusa-project/medusa_storage.git', branch: 'master'
+
+# Use mime-types to determine mimetypes based on extension
+gem 'mime-types', require: 'mime/types/full'
+
+# Use rubyzip to read zip files
+gem 'rubyzip'
+
+# Use libarchive for non-zip archive files
+gem 'libarchive'
+
 # Use capistrano for deployment
 group :development do
   gem "capistrano", "~> 3.10", require: false
@@ -31,9 +46,6 @@ end
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false

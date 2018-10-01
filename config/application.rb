@@ -26,6 +26,12 @@ module DatabankTasks
     COMPLETE = 'complete'
   end
 
+  class ProblemStatus
+    REPORTED = 'reported'
+    EXAMINED = 'examined'
+    RESOLVED = 'resolved'
+  end
+
   class PeekType
     ALL_TEXT = 'all_text'
     PART_TEXT = 'part_text'

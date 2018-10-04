@@ -3,8 +3,7 @@ class TasksController < ApplicationController
 
   # GET /tasks
   def index
-    @tasks = Task.all
-
+    @tasks = Task.tasks_from_params(params)
     render json: @tasks
   end
 
@@ -26,6 +25,7 @@ class TasksController < ApplicationController
 
   # PATCH/PUT /tasks/1
   def update
+
     if @task.update(task_params)
       render json: @task
     else
@@ -46,6 +46,6 @@ class TasksController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def task_params
-      params.require(:task).permit(:web_id, :storage_root, :storage_key, :binary_name)
+      params.require(:task).permit(:web_id, :storage_root, :storage_key, :binary_name, :status)
     end
 end

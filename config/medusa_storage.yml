@@ -1,0 +1,62 @@
+development:
+  :storage:
+  - :name: draft
+    :type: filesystem
+    :path: /Users/mfall3/Projects/databank/uploads
+  - :name: medusa
+    :type: filesystem
+    :path: /Users/mfall3/Projects/databank/mock_medusa
+  - :name: tmp
+    :type: filesystem
+    :path: /Users/mfall3/Projects/databank/extractions
+staging:
+  :storage:
+  - :name: draft
+    :type: filesystem
+    :path: /media/databank/uploads
+  - :name: medusa
+    :type: filesystem
+    :path: /media/medusa
+  - :name: tmp
+    :type: filesystem
+    :path: /media/databank/extractions
+production:
+  :storage:
+  - :name: draft
+    :type: filesystem
+    :path: /media/databank/uploads
+  - :name: medusa
+    :type: filesystem
+    :path: /media/medusa
+  - :name: tmp
+    :type: filesystem
+    :path: /media/databank/extractions
+pilot:
+  :storage:
+  - :name: draft
+    :type: s3
+    :aws_access_key_id: <%= Rails.application.credentials[Rails.env.to_sym][:aws][:access_key_id] %>
+    :aws_secret_access_key: <%= Rails.application.credentials[Rails.env.to_sym][:aws][:secret_access_key] %>
+    :region: us-east-2
+    :bucket: databank-pilot
+    :prefix: 'uploads/'
+  - :name: medusa
+    :type: s3
+    :aws_access_key_id: <%= Rails.application.credentials[Rails.env.to_sym][:aws][:access_key_id] %>
+    :aws_secret_access_key: <%= Rails.application.credentials[Rails.env.to_sym][:aws][:secret_access_key] %>
+    :region: us-east-2
+    :bucket: databank-pilot
+  - :name: tmp
+    :type: filesystem
+    :path: /media/databank/extractions
+test:
+  :storage:
+  - :name: draft
+    :type: filesystem
+    :path: /Users/mfall3/Projects/databank/uploads
+  - :name: medusa
+    :type: filesystem
+    :path: /Users/mfall3/Projects/databank/mock_medusa
+  - :name: tmp
+    :type: filesystem
+    :path: /Users/mfall3/Projects/databank/extractions

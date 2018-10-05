@@ -1,12 +1,3 @@
-amqp:
-  ssl: <%= Rails.application.credentials[Rails.env.to_sym][:amqp][:ssl] %>
-  port: <%= Rails.application.credentials[Rails.env.to_sym][:amqp][:port] %>
-  host: <%= Rails.application.credentials[Rails.env.to_sym][:amqp][:host] %>
-  user: <%= Rails.application.credentials[Rails.env.to_sym][:amqp][:user] %>
-  password: <%= Rails.application.credentials[Rails.env.to_sym][:amqp][:password] %>
-  verify_peer: <%= Rails.application.credentials[Rails.env.to_sym][:amqp][:verify_peer] %>
-  heartbeat: 10
-
 messages:
   outgoing_queue: fp_to_idb
   incoming_queue: idb_to_fp

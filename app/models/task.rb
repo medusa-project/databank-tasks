@@ -20,12 +20,12 @@ class Task < ApplicationRecord
       if params.has_key?('elements')
         return Task.where(status: params['status']).pluck(params['elements'])
 
-      # case: status filter, but no elements filter
+        # case: status filter, but no elements filter
       else
         return Task.where(status: params['status'])
       end
 
-    # case: elements filter, but no status filter
+      # case: elements filter, but no status filter
     elsif params.has_key?('elements')
       return Task.pluck(params['elements'])
     else
@@ -154,7 +154,7 @@ class Task < ApplicationRecord
     begin
       num_bytes = File.size?(self.storage_path)
       if num_bytes > ALLOWED_DISPLAY_BYTES
-        enc = charset_from_path(self.storage_path) ||'UTF-8'
+        enc = charset_from_path(self.storage_path) || 'UTF-8'
         peek_text = ""
         File.open(self.storage_path, 'r', encoding: enc).each do |line|
           peek_text << line
@@ -170,7 +170,9 @@ class Task < ApplicationRecord
         return true
       end
     rescue StandardError => ex
+      self.status = TaskStatus::ERROR
       self.peek_type = PeekType::NONE
+      self.save
       report_problem("Problem extracting text for task #{self.id}: #{ex.message}")
       return false
     end
@@ -182,7 +184,9 @@ class Task < ApplicationRecord
       self.peek_type = PeekType::IMAGE
       return true
     rescue StandardError => ex
+      self.status = TaskStatus::ERROR
       self.peek_type = PeekType::NONE
+      self.save
       report_problem("Problem extracting image for task #{self.id}: #{ex.message}")
       return false
     end
@@ -194,7 +198,9 @@ class Task < ApplicationRecord
       self.peek_type = PeekType::MICROSOFT
       return true
     rescue StandardError => ex
+      self.status = TaskStatus::ERROR
       self.peek_type = PeekType::NONE
+      self.save
       report_problem("Problem extracting microsoft for task #{self.id}: #{ex.message}")
       return false
     end
@@ -206,7 +212,9 @@ class Task < ApplicationRecord
       self.peek_type = PeekType::PDF
       return true
     rescue StandardError => ex
+      self.status = TaskStatus::ERROR
       self.peek_type = PeekType::NONE
+      self.save
       report_problem("Problem extracting pdf for task #{self.id}: #{ex.message}")
       return false
     end
@@ -227,19 +235,48 @@ class Task < ApplicationRecord
       entry_paths = []
       Zip::File.open(self.storage_path) do |zip_file|
         zip_file.each do |entry|
+
           if entry.name_safe?
+
+
             entry_path = valid_entry_path(entry.name)
 
             if entry_path && !is_ds_store(entry_path) && !is_mac_thing(entry_path)
+
               entry_paths << entry_path
-              extracted_entry_path = File.join(storage_path, entry_path)
-              extracted_entry_dir = File.dirname(extracted_entry_path)
-              FileUtils.mkdir_p extracted_entry_dir
-              #TODO
 
+              if is_directory(entry.name)
 
+                create_item(entry_path,
+                            name_part(entry_path),
+                            entry.size,
+                            'directory',
+                            true)
 
-              create_item(entry_path, name_part(entry_path), entry.size, is_directory(entry_path))
+              else
+
+                storage_dir = File.dirname(storage_path)
+                extracted_entry_path = File.join(storage_dir, entry_path)
+                extracted_entry_dir = File.dirname(extracted_entry_path)
+                FileUtils.mkdir_p extracted_entry_dir
+
+                raise Exception.new("extracted entry somehow already there?!!?!") if File.exist?(extracted_entry_path)
+
+                entry.extract(extracted_entry_path)
+
+                raise Exception.new("extracting entry not working!") unless File.exist?(extracted_entry_path)
+
+                mime_guess = Task.mime_from_path(extracted_entry_path) ||
+                    mime_from_filename(entry.name) ||
+                    'application/octet-stream'
+
+                create_item(entry_path,
+                            name_part(entry_path),
+                            entry.size,
+                            'directory',
+                            false)
+                File.delete(extracted_entry_path) if File.exist?(extracted_entry_path)
+              end
             end
           end
         end
@@ -255,9 +292,12 @@ class Task < ApplicationRecord
 
       return true
     rescue StandardError => ex
+      self.status = TaskStatus::ERROR
       self.peek_type = PeekType::NONE
+      self.save
       report_problem("problem extracting zip listing for task #{self.id}: #{ex.message}")
-      return false
+      #return false
+      raise ex
     end
   end
 
@@ -272,13 +312,50 @@ class Task < ApplicationRecord
 
           entry_path = valid_entry_path(entry.pathname)
           if entry_path
-            entry_paths << entry_path
-            entry_size = 0
-            ar.read_data(1024) do |x|
-              put x.class
-              entry_size = entry_size + x.length
+
+            if !is_ds_store(entry_path) && !is_mac_thing(entry_path)
+              entry_paths << entry_path
+
+              if is_directory(entry.pathname)
+
+                create_item(entry_path,
+                            name_part(entry_path),
+                            entry_size,
+                            'directory',
+                            true)
+              else
+
+                storage_dir = File.dirname(storage_path)
+                extracted_entry_path = File.join(storage_dir, entry_path)
+                extracted_entry_dir = File.dirname(extracted_entry_path)
+                FileUtils.mkdir_p extracted_entry_dir
+
+                entry_size = 0
+
+                File.open(extracted_entry_path, 'wb') do |entry_file|
+                  ar.read_data(1024) do |x|
+                    entry_file.write(x)
+                    entry_size = entry_size + x.length
+                  end
+                end
+
+                raise("extracting non-zip entry not working!") unless File.exist?(extracted_entry_path)
+
+                mime_guess = Task.mime_from_path(extracted_entry_path) ||
+                    mime_from_filename(entry.name) ||
+                    'application/octet-stream'
+
+                create_item(entry_path,
+                            name_part(entry_path),
+                            entry_size,
+                            mime_guess,
+                            false)
+
+                File.delete(extracted_entry_path) if File.exist?(extracted_entry_path)
+              end
+
             end
-            create_item(entry_path, name_part(entry_path), entry_size, is_directory(entry_path))
+
           end
         end
       end
@@ -294,7 +371,9 @@ class Task < ApplicationRecord
       end
 
     rescue StandardError => ex
+      self.status = TaskStatus::ERROR
       self.peek_type = PeekType::NONE
+      self.save
       report_problem("problem extracting extract listing for task #{self.id}: #{ex.message}")
       return false
     end
@@ -306,7 +385,9 @@ class Task < ApplicationRecord
       self.peek_type = PeekType::NONE
       return true
     rescue StandardError => ex
+      self.status = TaskStatus::ERROR
       self.peek_type = PeekType::NONE
+      self.save
       report_problem("problem creating default peek for task #{self.id}")
       return false
     end

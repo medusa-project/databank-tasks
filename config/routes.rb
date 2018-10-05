@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     resources :comments
   end
   resources :tasks do
-    resources :nested_items
+    resources :nested_items, only: [:index, :show]
     resources :problems do
       resources :comments
     end

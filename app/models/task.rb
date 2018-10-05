@@ -2,6 +2,7 @@ require 'mime/types'
 require 'os'
 require 'zip'
 require 'libarchive'
+require 'zlib'
 
 class Task < ApplicationRecord
 
@@ -39,8 +40,8 @@ class Task < ApplicationRecord
       self.status = TaskStatus::PROCESSING
       source_root = Application.storage_manager.root_set.at(self.storage_root)
       TMP_ROOT.copy_content_to(tmp_key, source_root, self.storage_key)
-      extract_features
-      self.status = TaskStatus::RIPE
+      features_extracted = extract_features
+      self.status = TaskStatus::RIPE if features_extracted
     rescue StandardError => error
       self.status = TaskStatus::ERROR
       self.peek_type = PeekType::NONE
@@ -66,6 +67,10 @@ class Task < ApplicationRecord
   end
 
   def extract_features
+
+    if self.binary_name.last(6) == 'txt.gz'
+      return extract_txtgz
+    end
 
     mime_guess = top_level_mime || mime_from_filename(self.binary_name) || 'application/octet-stream'
 
@@ -146,6 +151,29 @@ class Task < ApplicationRecord
       mime_guesses.first.content_type
     else
       nil
+    end
+  end
+
+  def extract_txtgz
+    begin
+
+      peek_text = ""
+      Zlib::GzipReader.open(self.storage_path).each do |line|
+        peek_text << line
+        if peek_text.length > ALLOWED_CHAR_NUM
+          self.peek_type = PeekType::PART_TEXT
+          self.peek_text = peek_text
+          return true
+        end
+      end
+
+    rescue StandardError => ex
+      self.status = TaskStatus::ERROR
+      self.peek_type = PeekType::NONE
+      self.save
+      report_problem("Problem extracting gz text for task #{self.id}: #{ex.message}")
+      #return false
+      raise ex
     end
   end
 

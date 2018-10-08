@@ -38,6 +38,7 @@ class Task < ApplicationRecord
   def process
     begin
       self.status = TaskStatus::PROCESSING
+      puts("Processing #{self.binary_name} for Task #{self.id}...")
       source_root = Application.storage_manager.root_set.at(self.storage_root)
       TMP_ROOT.copy_content_to(tmp_key, source_root, self.storage_key)
       features_extracted = extract_features
@@ -49,6 +50,15 @@ class Task < ApplicationRecord
     ensure
       if TMP_ROOT.exist?(tmp_tree_key)
         TMP_ROOT.delete_tree(tmp_tree_key)
+      end
+      if self.peek_text && self.peek_text.encoding.name != 'UTF-8'
+        begin
+          self.peek_text.encode('UTF-8')
+        rescue Encoding::UndefinedConversionError
+          self.peek_text = nil
+          self.peek_type = PeekType::NONE
+          report_problem('invalid encoding for peek text')
+        end
       end
       self.save
     end

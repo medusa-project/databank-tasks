@@ -47,6 +47,7 @@ class Task < ApplicationRecord
       self.status = TaskStatus::ERROR
       self.peek_type = PeekType::NONE
       report_problem(error.message)
+      raise error
     ensure
       if TMP_ROOT.exist?(tmp_tree_key)
         TMP_ROOT.delete_tree(tmp_tree_key)
@@ -54,13 +55,21 @@ class Task < ApplicationRecord
       if self.peek_text && self.peek_text.encoding.name != 'UTF-8'
         begin
           self.peek_text.encode('UTF-8')
+          self.save
         rescue Encoding::UndefinedConversionError
           self.peek_text = nil
           self.peek_type = PeekType::NONE
           report_problem('invalid encoding for peek text')
+        rescue Exception => ex
+          report_problem("invalid encoding and problem characer: #{ex.class}, #{ex.message}")
+        end
+      else
+        begin
+          self.save
+        rescue Exception => ex
+          report_problem("problem saving task: #{ex.class}, #{ex.message}")
         end
       end
-      self.save
     end
   end
 
@@ -192,7 +201,7 @@ class Task < ApplicationRecord
     begin
       num_bytes = File.size?(self.storage_path)
       if num_bytes > ALLOWED_DISPLAY_BYTES
-        enc = charset_from_path(self.storage_path) || 'UTF-8'
+        enc = Task.charset_from_path(self.storage_path) || 'UTF-8'
         peek_text = ""
         File.open(self.storage_path, 'r', encoding: enc).each do |line|
           peek_text << line

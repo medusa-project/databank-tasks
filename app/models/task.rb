@@ -78,7 +78,9 @@ class Task < ApplicationRecord
   end
 
   def tmp_key
-    File.join(tmp_tree_key, self.binary_name)
+    Rails.logger.warn("self.tmp_tree_key: #{self.tmp_tree_key}")
+    Rails.logger.warn("self.binary_name: #{self.binary_name}")
+    File.join(self.tmp_tree_key, self.binary_name)
   end
 
   def report_problem(report)

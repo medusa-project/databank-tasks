@@ -1,5 +1,5 @@
 set :rails_env, 'staging'
-set :deploy_to, '/home/lib-medusa-databank'
+set :deploy_to, '/home/databank'
 
 # server-based syntax
 # ======================
@@ -9,7 +9,7 @@ set :deploy_to, '/home/lib-medusa-databank'
 # server "example.com", user: "deploy", roles: %w{app db web}, my_property: :my_value
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
-server 'databank-tasks-pilot.library.illinois.edu', user: 'centos', roles: %w{app db web}
+server 'databank-tasks-pilot.library.illinois.edu', user: 'databank', roles: %w{app db web}
 
 set :rails_env, 'pilot'
 

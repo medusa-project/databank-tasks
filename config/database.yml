@@ -83,11 +83,16 @@ test:
 production:
   <<: *default
   database: databank_tasks
+  username: <%= Rails.application.credentials[Rails.env.to_sym][:primary_db][:username] %>
+  password: <%= Rails.application.credentials[Rails.env.to_sym][:primary_db][:password] %>
+  host: <%= Rails.application.credentials[Rails.env.to_sym][:primary_db][:host] %>
 
 pilot:
-  production:
-    <<: *default
-    database: databank_tasks
+  <<: *default
+  database: databank_tasks
+  username: <%= Rails.application.credentials[Rails.env.to_sym][:primary_db][:username] %>
+  password: <%= Rails.application.credentials[Rails.env.to_sym][:primary_db][:password] %>
+  host: <%= Rails.application.credentials[Rails.env.to_sym][:primary_db][:host] %>
 
 staging:
   <<: *default

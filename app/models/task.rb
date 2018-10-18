@@ -42,7 +42,11 @@ class Task < ApplicationRecord
       source_root = Application.storage_manager.root_set.at(self.storage_root)
       TMP_ROOT.copy_content_to(tmp_key, source_root, self.storage_key)
       features_extracted = extract_features
-      self.status = TaskStatus::RIPE if features_extracted
+      if features_extracted
+        self.status = TaskStatus::RIPE
+      else
+        self.status = TaskStatus::ERROR
+      end
     rescue StandardError => error
       self.status = TaskStatus::ERROR
       self.peek_type = PeekType::NONE
@@ -193,8 +197,8 @@ class Task < ApplicationRecord
       self.peek_type = PeekType::NONE
       self.save
       report_problem("Problem extracting gz text for task #{self.id}: #{ex.message}")
-      #return false
-      raise ex
+      return false
+      #raise ex
     end
   end
 

@@ -7,7 +7,9 @@
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
-
+set :rails_env, 'staging'
+set :deploy_to, '/home/lib-medusa-databank'
+server 'rdf-prod.library.illinois.edu', user: 'lib-medusa-databank', roles: %w{app db web}
 
 # role-based syntax
 # ==================

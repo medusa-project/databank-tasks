@@ -49,6 +49,26 @@ pilot:
   - :name: tmp
     :type: filesystem
     :path: /media/databank/extractions
+
+aws-production:
+  :storage:
+  - :name: draft
+    :type: s3
+    :aws_access_key_id: <%= Rails.application.credentials[Rails.env.to_sym][:aws][:access_key_id] %>
+    :aws_secret_access_key: <%= Rails.application.credentials[Rails.env.to_sym][:aws][:secret_access_key] %>
+    :region: us-east-2
+    :bucket: databank-pilot
+    :prefix: 'uploads/'
+  - :name: medusa
+    :type: s3
+    :aws_access_key_id: <%= Rails.application.credentials[Rails.env.to_sym][:aws][:access_key_id] %>
+    :aws_secret_access_key: <%= Rails.application.credentials[Rails.env.to_sym][:aws][:secret_access_key] %>
+    :region: us-east-2
+    :bucket: databank-prod
+  - :name: tmp
+    :type: filesystem
+    :path: /media/databank/extractions
+
 test:
   :storage:
   - :name: draft

@@ -19,7 +19,7 @@ staging:
     :path: /media/medusa
   - :name: tmp
     :type: filesystem
-    :path: /media/databank/extractions
+    :path: /media/efs/databank/extractions
 production:
   :storage:
   - :name: draft
@@ -30,7 +30,7 @@ production:
     :path: /media/medusa
   - :name: tmp
     :type: filesystem
-    :path: /media/databank/extractions
+    :path: /media/efs/databank/extractions
 pilot:
   :storage:
   - :name: draft
@@ -48,7 +48,7 @@ pilot:
     :bucket: databank-pilot
   - :name: tmp
     :type: filesystem
-    :path: /media/databank/extractions
+    :path: /media/efs/databank/extractions
 
 aws-production:
   :storage:
@@ -67,7 +67,7 @@ aws-production:
     :bucket: databank-prod
   - :name: tmp
     :type: filesystem
-    :path: /media/databank/extractions
+    :path: /media/efs/databank/extractions
 
 test:
   :storage:

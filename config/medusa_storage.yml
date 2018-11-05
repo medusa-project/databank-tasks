@@ -57,14 +57,14 @@ aws-production:
     :aws_access_key_id: <%= Rails.application.credentials[Rails.env.to_sym][:aws][:access_key_id] %>
     :aws_secret_access_key: <%= Rails.application.credentials[Rails.env.to_sym][:aws][:secret_access_key] %>
     :region: us-east-2
-    :bucket: databank-pilot
+    :bucket: databank-prod
     :prefix: 'uploads/'
   - :name: medusa
     :type: s3
     :aws_access_key_id: <%= Rails.application.credentials[Rails.env.to_sym][:aws][:access_key_id] %>
     :aws_secret_access_key: <%= Rails.application.credentials[Rails.env.to_sym][:aws][:secret_access_key] %>
     :region: us-east-2
-    :bucket: databank-prod
+    :bucket: medusa-prod-main
     :prefix: '983/2188/'
   - :name: tmp
     :type: filesystem

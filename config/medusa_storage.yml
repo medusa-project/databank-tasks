@@ -65,6 +65,7 @@ aws-production:
     :aws_secret_access_key: <%= Rails.application.credentials[Rails.env.to_sym][:aws][:secret_access_key] %>
     :region: us-east-2
     :bucket: databank-prod
+    :prefix: '983/2188/'
   - :name: tmp
     :type: filesystem
     :path: /media/efs/databank/extractions

@@ -40,6 +40,8 @@ class Task < ApplicationRecord
       self.status = TaskStatus::PROCESSING
       puts("Processing #{self.binary_name} for Task #{self.id}...")
       source_root = Application.storage_manager.root_set.at(self.storage_root)
+      next unless source_root.exist?(self.storage_key)
+
       TMP_ROOT.copy_content_to(tmp_key, source_root, self.storage_key)
       features_extracted = extract_features
       if features_extracted
@@ -51,7 +53,7 @@ class Task < ApplicationRecord
       self.status = TaskStatus::ERROR
       self.peek_type = PeekType::NONE
       report_problem(error.message)
-      raise error
+      #raise error
     ensure
       if TMP_ROOT.exist?(tmp_tree_key)
         TMP_ROOT.delete_tree(tmp_tree_key)

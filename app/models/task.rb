@@ -40,7 +40,7 @@ class Task < ApplicationRecord
       self.status = TaskStatus::PROCESSING
       puts("Processing #{self.binary_name} for Task #{self.id}...")
       source_root = Application.storage_manager.root_set.at(self.storage_root)
-      next unless source_root.exist?(self.storage_key)
+      return false unless source_root.exist?(self.storage_key)
 
       TMP_ROOT.copy_content_to(tmp_key, source_root, self.storage_key)
       features_extracted = extract_features

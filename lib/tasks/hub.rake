@@ -20,4 +20,12 @@ namespace :hub do
     end
   end
 
+  desc 'change processing to pending after interruption'
+  task processing2pending: :environment do
+    Task.where(status: TaskStatus::PROCESSING).each do |task|
+      task.status = Task::PENDING
+      task.save
+    end
+  end
+
 end

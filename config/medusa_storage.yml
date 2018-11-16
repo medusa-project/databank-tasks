@@ -19,7 +19,7 @@ staging:
     :path: /media/medusa
   - :name: tmp
     :type: filesystem
-    :path: /media/efs/databank/extractions
+    :path: /media/databank/extractions
 production:
   :storage:
   - :name: draft
@@ -30,7 +30,7 @@ production:
     :path: /media/medusa
   - :name: tmp
     :type: filesystem
-    :path: /media/efs/databank/extractions
+    :path: /media/databank/extractions
 pilot:
   :storage:
   - :name: draft

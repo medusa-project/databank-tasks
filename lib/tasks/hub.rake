@@ -8,6 +8,7 @@ namespace :hub do
     # wait for the last batch to finish
     if tasks_in_process.count == 0
       Task.where(status: TaskStatus::PENDING).each do |task|
+        puts "task #{task.id}"
         task.process
       end
     end

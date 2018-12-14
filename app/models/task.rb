@@ -84,8 +84,8 @@ class Task < ApplicationRecord
   end
 
   def tmp_key
-    Rails.logger.warn("self.tmp_tree_key: #{self.tmp_tree_key}")
-    Rails.logger.warn("self.binary_name: #{self.binary_name}")
+    #Rails.logger.warn("self.tmp_tree_key: #{self.tmp_tree_key}")
+    #Rails.logger.warn("self.binary_name: #{self.binary_name}")
     File.join(self.tmp_tree_key, self.binary_name)
   end
 
@@ -293,8 +293,11 @@ class Task < ApplicationRecord
 
           if entry.name_safe?
 
+            Rails.logger.warn ("entry, name_safe: #{entry.name}, #{entry.name_safe?}")
 
             entry_path = valid_entry_path(entry.name)
+
+            Rails.logger.warn("valid_entry_path: #{entry_path}")
 
             if entry_path && !is_ds_store(entry_path) && !is_mac_thing(entry_path)
 
@@ -332,6 +335,11 @@ class Task < ApplicationRecord
                             false)
                 File.delete(extracted_entry_path) if File.exist?(extracted_entry_path)
               end
+
+            else
+              Rails.logger.warn("skipped entry is ds_store: #{is_ds_store(entry_path)}")
+              Rails.logger.warn("skipped entry is mac thing: #{is_mac_thing(entry_path)}")
+
             end
           end
         end
@@ -362,7 +370,7 @@ class Task < ApplicationRecord
 
       entry_paths = []
 
-      Archive.read_open_filename('foo.tar.gz') do |ar|
+      Archive.read_open_filename(self.storage_path) do |ar|
         while entry = ar.next_header
 
           entry_path = valid_entry_path(entry.pathname)

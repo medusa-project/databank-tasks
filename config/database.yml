@@ -107,3 +107,10 @@ aws-production:
   username: <%= Rails.application.credentials[Rails.env.to_sym][:primary_db][:username] %>
   password: <%= Rails.application.credentials[Rails.env.to_sym][:primary_db][:password] %>
   host: <%= Rails.application.credentials[Rails.env.to_sym][:primary_db][:host] %>
+
+aws-demo:
+  <<: *default
+  database: databank_tasks
+  username: <%= Rails.application.credentials[Rails.env.to_sym][:primary_db][:username] %>
+  password: <%= Rails.application.credentials[Rails.env.to_sym][:primary_db][:password] %>
+  host: <%= Rails.application.credentials[Rails.env.to_sym][:primary_db][:host] %>

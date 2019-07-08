@@ -13,6 +13,10 @@
 !/log/.keep
 !/tmp/.keep
 
+# Ignore local control scripts
+tasks_start.sh
+tasks_stop.sh
+
 # Ignore uploaded files in development
 /storage/*
 !/storage/.keep

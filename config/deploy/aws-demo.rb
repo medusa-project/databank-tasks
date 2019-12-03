@@ -14,5 +14,5 @@ set :deploy_to, '/home/databank'
 set :ssh_options, {
     forward_agent: true,
     auth_methods: ["publickey"],
-    keys: ["#{Dir.home}/.ssh/medusa-prod.pem"]
+    keys: ["#{Dir.home}/.ssh/medusa_prod.pem"]
 }

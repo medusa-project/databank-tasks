@@ -14,8 +14,10 @@
 !/tmp/.keep
 
 # Ignore local control scripts
-tasks_start.sh
-tasks_stop.sh
+start_dev.sh
+start_test.sh
+stop_dev.sh
+stop_test.sh
 
 # Ignore uploaded files in development
 /storage/*
@@ -26,5 +28,6 @@ tasks_stop.sh
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-# Ignore local files
+# Ignore local IDE files
 .idea
+databank-tasks.iml

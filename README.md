@@ -1,24 +1,6 @@
-# README
+# databank-tasks
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Databank-tasks is a Ruby on Rails API to manage file processing tasks for Illinois Data Bank, which is a public access repository for research data from the University of Illinois at Urbana-Champaign.
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Application documentation is hosted in the
+[SCARS Wiki](https://wiki.illinois.edu/wiki/display/scrs/SCARS+Home).
